@@ -7,23 +7,29 @@ local ship = require 'ship'
 
 function love.load()
 	background = love.graphics.newVideo(config.background)
-	ship.img = love.graphics.newImage("content/ships/ship.png")
+	shipImg = love.graphics.newImage(ship.img)
+	deltaRotation = 0
 end
 
 function love.update(dt)
 	if love.keyboard.isDown('left','a') then
-		ship.rotation = ship.rotation + ship.deltaRotation
+		deltaRotation = deltaRotation + ship.deltaRotation
 	elseif love.keyboard.isDown('right','d') then
-		ship.rotation = ship.rotation - ship.deltaRotation
+		deltaRotation = deltaRotation - ship.deltaRotation
 	end
+
+	ship.rotation = ship.rotation + deltaRotation
+	deltaRotation = deltaRotation * 0.98
 
 	if(not background:isPlaying()) then 
 		background:rewind() 
 		background:play() 
 	end
+
+
 end
 
 function love.draw()
 	love.graphics.draw(background, 0, 0)
-	love.graphics.draw(ship.img, love.graphics.getWidth()/2, love.graphics.getHeight()/2, ship.rotation, 1, 1, ship.img:getHeight()/2, ship.img:getWidth()/2)
+	love.graphics.draw(shipImg, love.graphics.getWidth()/2, love.graphics.getHeight()/2, ship.rotation, 1, 1, shipImg:getHeight()/2, shipImg:getWidth()/2)
 end

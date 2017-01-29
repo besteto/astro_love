@@ -1,5 +1,5 @@
 local ship = {
-	img = nil,
+	img = "content/ships/ship.png",
 	x = 100,
 	y = 100,
 	rotation = 0,
