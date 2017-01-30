@@ -3,7 +3,7 @@ local sin = math.sin
 local sqrt = math.sqrt
 
 local config = require 'config' 
-local ship = require 'ship'
+local ship = config.ship
 
 function love.load()
 	background = love.graphics.newVideo(config.background)
@@ -25,7 +25,6 @@ function love.update(dt)
 		background:rewind() 
 		background:play() 
 	end
-
 
 end
 
