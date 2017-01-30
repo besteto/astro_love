@@ -31,16 +31,16 @@ function love.update(dt)
 	end
 
 	if love.keyboard.isDown('up','w') then
-      ship.xVelocity = ship.xVelocity + ship.deltaSpeed*dt * math.sin(ship.rotation)
-      ship.yVelocity = ship.yVelocity + ship.deltaSpeed*dt * math.cos(ship.rotation)
+      ship.x = ship.x + ship.deltaSpeed*dt * math.sin(ship.rotation)
+      ship.y = ship.y - ship.deltaSpeed*dt * math.cos(ship.rotation)
 	end
 	if love.keyboard.isDown('down','s') then
-      ship.xVelocity = ship.xVelocity - ship.deltaSpeed*dt * math.sin(ship.rotation)
-      ship.yVelocity = ship.yVelocity - ship.deltaSpeed*dt * math.cos(ship.rotation)
+      ship.x = ship.x - ship.deltaSpeed*dt * math.sin(ship.rotation)
+      ship.y = ship.y + ship.deltaSpeed*dt * math.cos(ship.rotation)
 	end
 
- 	ship.x = ship.x + ship.xVelocity*dt
-	ship.y = ship.y + ship.yVelocity*dt
+ 	--ship.x = ship.x + ship.xVelocity*dt
+	--ship.y = ship.y + ship.yVelocity*dt
 
 	ship.rotation = ship.rotation + dR*dt
 	
