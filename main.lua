@@ -48,6 +48,18 @@ function love.update(dt)
 	dR = isNearNull(dR)
 	dS = isNearNull(dS)
 
+	if ship.x < 0 then
+		ship.x = love.graphics.getWidth()
+	end
+	if ship.x > love.graphics.getWidth() then
+		ship.x = 0
+	end
+	if ship.y < 0 then
+		ship.y = love.graphics.getHeight()
+	end
+	if ship.y > love.graphics.getHeight() then
+		ship.y = 0
+	end
 
 	if(not background:isPlaying()) then 
 		background:rewind() 
