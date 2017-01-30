@@ -24,13 +24,30 @@ end
 
 function love.update(dt)
 	if love.keyboard.isDown('left','a') then
-		dR = dR + ship.deltaRotation
-	elseif love.keyboard.isDown('right','d') then
 		dR = dR - ship.deltaRotation
 	end
+	if love.keyboard.isDown('right','d') then
+		dR = dR + ship.deltaRotation
+	end
 
-	ship.rotation = ship.rotation + dR
+	if love.keyboard.isDown('up','w') then
+      ship.xVelocity = ship.xVelocity + ship.deltaSpeed*dt * math.sin(ship.rotation)
+      ship.yVelocity = ship.yVelocity + ship.deltaSpeed*dt * math.cos(ship.rotation)
+	end
+	if love.keyboard.isDown('down','s') then
+      ship.xVelocity = ship.xVelocity - ship.deltaSpeed*dt * math.sin(ship.rotation)
+      ship.yVelocity = ship.yVelocity - ship.deltaSpeed*dt * math.cos(ship.rotation)
+	end
+
+ 	ship.x = ship.x + ship.xVelocity*dt
+	ship.y = ship.y + ship.yVelocity*dt
+
+	ship.rotation = ship.rotation + dR*dt
+	
 	dR = isNearNull(dR)
+	ship.xVelocity = isNearNull(ship.xVelocity)
+	ship.yVelocity = isNearNull(ship.yVelocity)
+
 
 	if(not background:isPlaying()) then 
 		background:rewind() 
@@ -41,5 +58,5 @@ end
 
 function love.draw()
 	love.graphics.draw(background, 0, 0)
-	love.graphics.draw(shipImg, love.graphics.getWidth()/2, love.graphics.getHeight()/2, ship.rotation, 1, 1, shipImg:getHeight()/2, shipImg:getWidth()/2)
+	love.graphics.draw(shipImg, ship.x, ship.y, ship.rotation, 1, 1, shipImg:getHeight()/2, shipImg:getWidth()/2)
 end
