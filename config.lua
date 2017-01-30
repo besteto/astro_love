@@ -11,7 +11,7 @@ local config =
 		y = 100,
 		rotation = 0,
 		deltaRotation = 0.1,
-		deltaSpeed = 100
+		deltaSpeed = 10
 	}
 
 }

@@ -20,8 +20,7 @@ function love.load()
 	background = love.graphics.newVideo(config.background)
 	shipImg = love.graphics.newImage(ship.img)
 	dR = 0
-	dxS = 0
-	dyS = 0
+	dS = 0
 end
 
 function love.update(dt)
@@ -33,22 +32,21 @@ function love.update(dt)
 	end
 
 	if love.keyboard.isDown('up','w') then
-        dxS = dxS + ship.deltaSpeed*dt * math.sin(ship.rotation)
-        dyS = dyS - ship.deltaSpeed*dt * math.cos(ship.rotation)
+		dS = dS + ship.deltaSpeed
 	end
 	if love.keyboard.isDown('down','s') then
-        dxS = dxS - ship.deltaSpeed*dt * math.sin(ship.rotation)
-        dyS = dyS + ship.deltaSpeed*dt * math.cos(ship.rotation)
+		dS = dS - ship.deltaSpeed
+		if dS < 0 then
+			dS = 0
+		end
 	end
 
- 	ship.x = ship.x + dxS*dt
-	ship.y = ship.y + dyS*dt
-
+    ship.x = ship.x + dS * dt * math.sin(ship.rotation)
+    ship.y = ship.y - dS * dt * math.cos(ship.rotation)
 	ship.rotation = ship.rotation + dR*dt
-	
+
 	dR = isNearNull(dR)
-	dxS = isNearNull(dxS)
-	dyS = isNearNull(dyS)
+	dS = isNearNull(dS)
 
 
 	if(not background:isPlaying()) then 
