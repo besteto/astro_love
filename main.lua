@@ -4,22 +4,33 @@ local sqrt = math.sqrt
 
 local config = require 'config' 
 local ship = config.ship
+local eps = config.epsilon
+local di = config.deltaInertia
+
+function isNearNull(numb)
+	if abs(numb) < eps then
+		numb = 0
+	else 
+		numb = numb * di
+	end
+	return numb
+end
 
 function love.load()
 	background = love.graphics.newVideo(config.background)
 	shipImg = love.graphics.newImage(ship.img)
-	deltaRotation = 0
+	dR = 0
 end
 
 function love.update(dt)
 	if love.keyboard.isDown('left','a') then
-		deltaRotation = deltaRotation + ship.deltaRotation
+		dR = dR + ship.deltaRotation
 	elseif love.keyboard.isDown('right','d') then
-		deltaRotation = deltaRotation - ship.deltaRotation
+		dR = dR - ship.deltaRotation
 	end
 
-	ship.rotation = ship.rotation + deltaRotation
-	deltaRotation = deltaRotation * 0.98
+	ship.rotation = ship.rotation + dR
+	dR = isNearNull(dR)
 
 	if(not background:isPlaying()) then 
 		background:rewind() 

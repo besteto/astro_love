@@ -3,6 +3,7 @@ local config =
 {
 	background   = 'content/common/back.ogv',
 	epsilon = 1e-7,
+	deltaInertia = 0.98,
 	
 	ship = {
 		img = "content/ships/ship.png",
