@@ -1,65 +1,22 @@
-local abs = math.abs
-local sin = math.sin
-local sqrt = math.sqrt
+-- do not edit in this sprint!
 
-local config = require 'config' 
-local ship = config.ship
-local eps = config.epsilon
-local di = config.deltaInertia
-
-function isNearNull(numb)
-	if abs(numb) < eps then
-		numb = 0
-	else 
-		numb = numb * di
-	end
-	return numb
-end
+local config = require('config') 
+local ship   = require('ship')
 
 function love.load()
 	background = love.graphics.newVideo(config.background)
-	shipImg = love.graphics.newImage(ship.img)
-	dR = 0
-	dS = 0
+	my_ship = ship:new(config.ship)
 end
 
 function love.update(dt)
-	if love.keyboard.isDown('left','a') then
-		dR = dR - ship.deltaRotation
-	end
-	if love.keyboard.isDown('right','d') then
-		dR = dR + ship.deltaRotation
-	end
 
-	if love.keyboard.isDown('up','w') then
-		dS = dS + ship.deltaSpeed
-	end
-	if love.keyboard.isDown('down','s') then
-		dS = dS - ship.deltaSpeed
-		if dS < 0 then
-			dS = 0
-		end
-	end
+	if love.keyboard.isDown('p')     then my_ship:spawn()  end
+	if love.keyboard.isDown('left','a')  then my_ship:turn_l() end
+	if love.keyboard.isDown('right','d') then my_ship:turn_r() end
+	if love.keyboard.isDown('up','w')    then my_ship:accel()  end
+	if love.keyboard.isDown('down','s')  then my_ship:brake()  end
 
-    ship.x = ship.x + dS * dt * math.sin(ship.rotation)
-    ship.y = ship.y - dS * dt * math.cos(ship.rotation)
-	ship.rotation = ship.rotation + dR*dt
-
-	dR = isNearNull(dR)
-	dS = isNearNull(dS)
-
-	if ship.x < 0 then
-		ship.x = love.graphics.getWidth()
-	end
-	if ship.x > love.graphics.getWidth() then
-		ship.x = 0
-	end
-	if ship.y < 0 then
-		ship.y = love.graphics.getHeight()
-	end
-	if ship.y > love.graphics.getHeight() then
-		ship.y = 0
-	end
+	my_ship:update(dt)
 
 	if(not background:isPlaying()) then 
 		background:rewind() 
@@ -69,6 +26,7 @@ function love.update(dt)
 end
 
 function love.draw()
+
 	love.graphics.draw(background, 0, 0)
-	love.graphics.draw(shipImg, ship.x, ship.y, ship.rotation, 1, 1, shipImg:getHeight()/2, shipImg:getWidth()/2)
+	my_ship:draw()
 end
