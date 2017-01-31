@@ -10,7 +10,7 @@ end
 
 function love.update(dt)
 
-	if love.keyboard.isDown('p')     then my_ship:spawn()  end
+	if love.keyboard.isDown('p')         then my_ship:spawn()  end
 	if love.keyboard.isDown('left','a')  then my_ship:turn_l() end
 	if love.keyboard.isDown('right','d') then my_ship:turn_r() end
 	if love.keyboard.isDown('up','w')    then my_ship:accel()  end

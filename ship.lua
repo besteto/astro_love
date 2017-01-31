@@ -43,16 +43,8 @@ function ship:update(dt)
  		self.y = 0
  	end
 
- 	if utils.isNearNull(self.dR) then
- 		self.dR = 0
- 	else
- 		self.dR = self.dR * self.coefInertia
- 	end
- 	if utils.isNearNull(self.dS) then
- 		self.dS = 0
- 	else
- 		self.dS = self.dS * self.coefInertia
- 	end
+	if self.dR  then self.dR = utils.round_null(self.dR * self.coefInertia) end
+	if self.dS  then self.dS = utils.round_null(self.dS * self.coefInertia) end
 
 end	
 
