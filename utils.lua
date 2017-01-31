@@ -7,10 +7,7 @@ local eps = 1e-7
 
 
 function utils.isNearNull(numb)
-	if abs(numb) < eps then
-		return true
-	end
-	return false
+	return  abs(numb) < eps 
 end
 
 function utils.round_null(num)
