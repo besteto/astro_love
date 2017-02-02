@@ -64,4 +64,10 @@ function gameObj:brake()
 	self.dS = self.dS * self.coefBrake
 end	
 
+function gameObj:roaming()
+	self.x = math.random(love.graphics.getWidth())
+	self.y = math.random(love.graphics.getHeight())
+	self.dR = math.random(-10,10)
+end
+
 return gameObj
