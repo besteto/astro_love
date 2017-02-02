@@ -14,9 +14,18 @@ local config =
 		coefInertia = 0.98,
 	},
 
-	blackthing = {
+	blackthing = 
+	{
 		img = "content/npc/blackthing.png",
+		x = 100,
+		y = 100,
+		rotation = 0,
+		deltaRotation = 0.1,
+		deltaSpeed = 10,
+		coefBrake = 0.8,
+		coefInertia = 0.98,
 		coefInertia = 1,
+	
 	}
 
 }

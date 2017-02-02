@@ -1,14 +1,15 @@
-local config = require('config') 
-local gameObj   = require('gameObj')
+local config  = require('config') 
+local gameObj = require('gameObj')
 
 function love.load()
+	math.randomseed( os.time() )
 	background = love.graphics.newVideo(config.background)
 	my_ship = gameObj:new(config.ship)
+	
 	blackthings = {}
 
 	for i = 1, config.blackthingNumb do
-		blackthings[i] = gameObj:new(config.blackthing)
-		blackthings[i]:roaming()
+		table.insert(blackthings, gameObj:new(config.blackthing):roaming())
 	end
 end
 
@@ -26,8 +27,8 @@ function love.update(dt)
 	if love.keyboard.isDown('down','s')  then my_ship:brake()  end
 
 	my_ship:update(dt)
-	for i = 1, config.blackthingNumb do
-		blackthings[i]:draw()
+	for i = 1, #blackthings do
+		blackthings[i]:update(dt)
 	end
 
 	if(not background:isPlaying()) then 

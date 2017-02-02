@@ -1,12 +1,22 @@
-local gameObj = {}
+local math = math
 local utils = require('utils')
 
+local gameObj = {}
+
 function gameObj:new(config)
-	local obj = config or {}
+	local obj = {}  
 		
-	obj.image = love.graphics.newImage(obj.img) 
+	obj.image = love.graphics.newImage(config.img) 
 	obj.dR = 0;
 	obj.dS = 0 
+	obj.x 			  = config.x             or 0
+	obj.y 			  = config.y             or 0
+	obj.rotation 	  = config.rotation      or 0
+	obj.deltaRotation = config.deltaRotation or 0
+	obj.deltaSpeed 	  = config.deltaSpeed    or 0
+	obj.coefBrake     = config.coefBrake 	 or 0
+	obj.coefInertia   = config.coefInertia   or 0
+	
 	obj.centerX = obj.image:getWidth()/2
 	obj.centerY = obj.image:getHeight()/2
 
@@ -65,9 +75,10 @@ function gameObj:brake()
 end	
 
 function gameObj:roaming()
-	self.x = math.random(love.graphics.getWidth())
-	self.y = math.random(love.graphics.getHeight())
-	self.dR = math.random(-10,10)
+	self.x  = math.random(0, love.graphics.getWidth())
+	self.y  = math.random(0, love.graphics.getHeight())
+	self.dR = math.random(-5,5)
+	return self
 end
 
 return gameObj
