@@ -1,7 +1,7 @@
-local ship = {}
+local gameObj = {}
 local utils = require('utils')
 
-function ship:new(config)
+function gameObj:new(config)
 	local obj = config or {}
 		
 	obj.image = love.graphics.newImage(obj.img) 
@@ -15,16 +15,16 @@ function ship:new(config)
 	return obj
 end
 
-function ship:spawn()
+function gameObj:spawn()
 	self.x = love.graphics.getWidth() /2  
 	self.y = love.graphics.getHeight()/2  
 end
 
-function ship:draw()
+function gameObj:draw()
 	love.graphics.draw(self.image, self.x, self.y, self.rotation, 1, 1, self.centerX, self.centerY)
 end	
 
-function ship:update(dt)
+function gameObj:update(dt)
 	self.rotation = self.rotation + self.dR * dt
 
 	self.x = self.x + self.dS * dt * math.sin(self.rotation)
@@ -48,20 +48,20 @@ function ship:update(dt)
 
 end	
 
-function ship:turn_l()
+function gameObj:turn_l()
 	self.dR = self.dR - self.deltaRotation
 end	
 
-function ship:turn_r()
+function gameObj:turn_r()
 	self.dR = self.dR + self.deltaRotation
 end	
 
-function ship:accel()
+function gameObj:accel()
 	self.dS = self.dS + self.deltaSpeed
 end	
 
-function ship:brake()
+function gameObj:brake()
 	self.dS = self.dS * self.coefBrake
 end	
 
-return ship
+return gameObj
