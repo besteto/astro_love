@@ -44,21 +44,8 @@ function gameObj:update(dt)
     self.y = self.y - self.dS * dt * math.cos(self.rotation)
 	
     if self.isNPC then
-    	if self.x < 0 then 
-    		self.x = 0 
-    		self.dS = self.dS * (-1)
-    	end
-	 	if self.x > love.graphics.getWidth() then 
-	 		self.x = love.graphics.getWidth() 
-	 		self.dS = self.dS * (-1)
-	 	end
-	 	if self.y < 0 then 
-	 		self.y = 0 
-	 		self.dS = self.dS * (-1)
-	 	end
-	 	if self.y > love.graphics.getHeight() then 
-	 		self.y = love.graphics.getHeight() 
-	 		self.dS = self.dS * (-1)
+    	if self.x < 0 or self.x > love.graphics.getWidth() or self.y < 0 or self.y > love.graphics.getHeight() then 
+	 		self.dS = -self.dS
 	 	end
     else
 		if self.x < 0 then self.x = love.graphics.getWidth() end
@@ -91,7 +78,7 @@ end
 function gameObj:roaming()
 	self.x  = math.random(0, love.graphics.getWidth())
 	self.y  = math.random(0, love.graphics.getHeight())
-	self.dR = math.random(-5,5)
+	self.dR = math.random(-.5,.5)
 	self.dS = math.random(5,100)
 	return self
 end
