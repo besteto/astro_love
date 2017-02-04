@@ -16,9 +16,11 @@ function gameObj:new(config)
 	obj.deltaSpeed 	  = config.deltaSpeed    or 0
 	obj.coefBrake     = config.coefBrake 	 or 0
 	obj.coefInertia   = config.coefInertia   or 0
+	obj.isNPC		  = config.isNPC
 	
-	obj.centerX = obj.image:getWidth()/2
-	obj.centerY = obj.image:getHeight()/2
+	obj.collisionR 	  = (obj.image:getWidth()+obj.image:getHeight())/4
+	obj.centerX 	  = obj.image:getWidth()/2
+	obj.centerY 	  = obj.image:getHeight()/2
 
 	setmetatable(obj,self)
    	self.__index   = self
@@ -32,6 +34,7 @@ end
 
 function gameObj:draw()
 	love.graphics.draw(self.image, self.x, self.y, self.rotation, 1, 1, self.centerX, self.centerY)
+	love.graphics.circle("line", self.x, self.y, self.collisionR, 50)
 end	
 
 function gameObj:update(dt)
@@ -40,18 +43,29 @@ function gameObj:update(dt)
 	self.x = self.x + self.dS * dt * math.sin(self.rotation)
     self.y = self.y - self.dS * dt * math.cos(self.rotation)
 	
-	if self.x < 0 then
- 		self.x = love.graphics.getWidth()
- 	end
- 	if self.x > love.graphics.getWidth() then
- 		self.x = 0
- 	end
- 	if self.y < 0 then
- 		self.y = love.graphics.getHeight()
- 	end
- 	if self.y > love.graphics.getHeight() then
- 		self.y = 0
- 	end
+    if self.isNPC then
+    	if self.x < 0 then 
+    		self.x = 0 
+    		self.dS = self.dS * (-1)
+    	end
+	 	if self.x > love.graphics.getWidth() then 
+	 		self.x = love.graphics.getWidth() 
+	 		self.dS = self.dS * (-1)
+	 	end
+	 	if self.y < 0 then 
+	 		self.y = 0 
+	 		self.dS = self.dS * (-1)
+	 	end
+	 	if self.y > love.graphics.getHeight() then 
+	 		self.y = love.graphics.getHeight() 
+	 		self.dS = self.dS * (-1)
+	 	end
+    else
+		if self.x < 0 then self.x = love.graphics.getWidth() end
+	 	if self.x > love.graphics.getWidth() then self.x = 0 end
+	 	if self.y < 0 then self.y = love.graphics.getHeight() end
+	 	if self.y > love.graphics.getHeight() then self.y = 0 end
+	end
 
 	if self.dR  then self.dR = utils.round_null(self.dR * self.coefInertia) end
 	if self.dS  then self.dS = utils.round_null(self.dS * self.coefInertia) end
@@ -78,6 +92,7 @@ function gameObj:roaming()
 	self.x  = math.random(0, love.graphics.getWidth())
 	self.y  = math.random(0, love.graphics.getHeight())
 	self.dR = math.random(-5,5)
+	self.dS = math.random(5,100)
 	return self
 end
 

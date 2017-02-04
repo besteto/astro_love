@@ -1,34 +1,42 @@
 local config  = require('config') 
 local gameObj = require('gameObj')
+local utils = require('utils')
 
 function love.load()
 	math.randomseed( os.time() )
 	background = love.graphics.newVideo(config.background)
-	my_ship = gameObj:new(config.ship)
 	
-	blackthings = {}
+	allthings = {}
+
+	table.insert(allthings, gameObj:new(config.ship))
 
 	for i = 1, config.blackthingNumb do
-		table.insert(blackthings, gameObj:new(config.blackthing):roaming())
+		table.insert(allthings, gameObj:new(config.blackthing):roaming())
 	end
 end
 
 function love.update(dt)
 
 	if love.keyboard.isDown('p')         then 
-		my_ship:spawn() 
-		for i = 1, config.blackthingNumb do
-			blackthings[i]:roaming()
+		
+		allthings[1]:spawn() 
+		for i = 2, config.blackthingNumb+1 do
+			allthings[i]:roaming()
 		end
 	end
-	if love.keyboard.isDown('left','a')  then my_ship:turn_l() end
-	if love.keyboard.isDown('right','d') then my_ship:turn_r() end
-	if love.keyboard.isDown('up','w')    then my_ship:accel()  end
-	if love.keyboard.isDown('down','s')  then my_ship:brake()  end
+	if love.keyboard.isDown('left','a')  then allthings[1]:turn_l() end
+	if love.keyboard.isDown('right','d') then allthings[1]:turn_r() end
+	if love.keyboard.isDown('up','w')    then allthings[1]:accel()  end
+	if love.keyboard.isDown('down','s')  then allthings[1]:brake()  end
 
-	my_ship:update(dt)
-	for i = 1, #blackthings do
-		blackthings[i]:update(dt)
+	for i = 1, #allthings do
+		for j = 1, #allthings do
+			if utils.isCrossed(allthings[i],allthings[j]) then
+				allthings[i].dS = allthings[i].dS * (-1)
+				allthings[j].dS = allthings[j].dS * (-1)
+			end
+		end
+		allthings[i]:update(dt)
 	end
 
 	if(not background:isPlaying()) then 
@@ -41,8 +49,7 @@ end
 function love.draw()
 	love.graphics.draw(background, 0, 0)
 
-	my_ship:draw()
-	for i = 1, config.blackthingNumb do
-		blackthings[i]:draw()
+	for i = 1, #allthings do
+		allthings[i]:draw()
 	end
 end
