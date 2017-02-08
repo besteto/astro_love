@@ -1,6 +1,6 @@
 local config = 
 {
-	background   = 'content/common/back.ogv',
+	background   = require('content/common/sh_backgrnd'),
 	blackthingNumb = 5,
 
 	ship = {

@@ -1,10 +1,10 @@
 local config  = require('config') 
 local gameObj = require('gameObj')
-local utils = require('utils')
+local utils   = require('utils')
 
 function love.load()
 	math.randomseed( os.time() )
-	background = love.graphics.newVideo(config.background)
+	sh_back = love.graphics.newShader(config.background)
 	
 	allthings = {}
 
@@ -13,6 +13,8 @@ function love.load()
 	for i = 1, config.blackthingNumb do
 		table.insert(allthings, gameObj:new(config.blackthing):roaming())
 	end
+
+	t = 0
 end
 
 function love.update(dt)
@@ -38,16 +40,15 @@ function love.update(dt)
 		end
 		allthings[i]:update(dt)
 	end
-
-	if(not background:isPlaying()) then 
-		background:rewind() 
-		background:play() 
-	end
+	t = t + dt
+	sh_back:send("time", t)
 
 end
 
 function love.draw()
-	love.graphics.draw(background, 0, 0)
+	love.graphics.setShader(sh_back)
+	love.graphics.rectangle('fill',0,0,love.graphics.getDimensions())
+	love.graphics.setShader()
 
 	for i = 1, #allthings do
 		allthings[i]:draw()
