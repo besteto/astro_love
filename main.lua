@@ -33,9 +33,11 @@ function love.update(dt)
 
 	for i = 1, #allthings do
 		for j = 1, #allthings do
-			if utils.isCrossed(allthings[i],allthings[j]) then
-				allthings[i].dS = allthings[i].dS * (-1)
-				allthings[j].dS = allthings[j].dS * (-1)
+			if i ~= j then
+				if utils.isCrossed(allthings[i],allthings[j]) then
+					allthings[i].dSx = -allthings[i].dSx
+					allthings[i].dSy = -allthings[i].dSy
+				end
 			end
 		end
 		allthings[i]:update(dt)
